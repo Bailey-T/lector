@@ -1,0 +1,3 @@
+azure/aks
+hashicorp/terraform
+hashicorp/vault-k8s
