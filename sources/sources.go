@@ -7,18 +7,14 @@ import (
 	"strings"
 )
 
-type repo struct{
-	// Declares the fields for a github repo
-	ghowner string
-	ghrepo  string
+type upstream struct{
+	// Declares the fields for an upstream source to check
+	owner string // Azure, Hashicorp, Elastic etc.
+	repo  string // AKS, Terraform, MetricBeat etc.
+	source string // Github, ArtifactHub
 }
 
-type githubrepo interface{
-	Owner()
-	Repo()
-}
-
-func ReadRepos (filePath string)(repoList []repo) {
+func GetUpstream (filePath string)(repoList []upstream) {
 	// open file
 	f, err := os.Open(filePath)
 	if err != nil {
@@ -31,10 +27,17 @@ func ReadRepos (filePath string)(repoList []repo) {
 	scanner := bufio.NewScanner(f)
 
 	for scanner.Scan() {
-		// go over each line and split on the slash
-		sp := strings.Split(scanner.Text(), "/")
-		// append as a repo object to the array
-		repoList = append(repoList, repo{ghowner: sp[0], ghrepo: sp[1] })
+		st := strings.ToLower(strings.Replace(scanner.Text(),"https://","",1))
+		if strings.Contains(st, "github" ) {
+			// go over each line and split on the slash
+			sp := strings.Split(strings.Replace(st, "github.com/","",1), "/")
+			// append as a repo object to the array
+			repoList = append(repoList, upstream{owner: sp[0], repo: sp[1], source: "github"})
+		}
+		if strings.Contains(st, "artifacthub") {
+			sp := strings.Split(strings.Replace(st, "artifacthub.io/","",1), "/")
+			repoList = append(repoList, upstream{owner: sp[2], repo: sp[3], source: "artifacthub"})
+		}
 	}
 
 	if err := scanner.Err(); err != nil {
@@ -44,12 +47,14 @@ func ReadRepos (filePath string)(repoList []repo) {
 	return repoList
 }
 
-func (r repo) Owner() (owner string) {
-	owner = r.ghowner
-	return
+func (u upstream) Owner() (owner string) {
+	return u.owner
 }
 
-func (r repo) Repo() (repo string) {
-	repo = r.ghrepo
-	return
+func (u upstream) Repo() (repo string) {
+	return u.repo
+}
+
+func (u upstream) Source() (repo string) {
+	return u.source
 }

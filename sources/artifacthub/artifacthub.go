@@ -2,15 +2,14 @@ package artifacthub
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
+	"log"
 	"net/http"
 )
 
-func GetPackage() (string, error) {
+func GetHelmPackage(r, m string) (string, error) {
 	var result map[string]interface{}
-
-	resp, err := http.Get("https://artifacthub.io/api/v1/packages/helm/openstack-helm/elastic-filebeat")
+	resp, err := http.Get("https://artifacthub.io/api/v1/packages/helm/"+r+"/"+m)
 	if err != nil {
 		return "", err
 	}
@@ -19,12 +18,8 @@ func GetPackage() (string, error) {
 	body, _ := io.ReadAll(resp.Body)
 	//JSON Map creator
 	json.Unmarshal(body, &result)
+
+	log.Printf("%v: {Chart: %v, App: %v} \n", result["name"], result["version"], result["app_version"])	
+
 	
-	//fmt.Printf("%v",string(body))
-	fmt.Printf("%v",result["name"])
-	
-	for k,i := range result {
-		fmt.Printf("%v : %v\n",k,i)
-	}
-	
-	return string(body), nil}
+	return "", nil}

@@ -1,3 +1,8 @@
-azure/aks
-hashicorp/terraform
-hashicorp/vault-k8s
+https://github.com/Azure/AKS
+https://github.com/hashicorp/terraform
+https://github.com/hashicorp/vault-k8s
+
+
+https://artifacthub.io/packages/helm/openstack-helm/elastic-filebeat
+https://artifacthub.io/packages/helm/cert-manager/cert-manager
+https://artifacthub.io/packages/helm/ingress-nginx/ingress-nginx
