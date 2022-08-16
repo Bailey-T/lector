@@ -9,13 +9,13 @@ import (
 
 type repo struct{
 	// Declares the fields for a github repo
-	owner string
-	repo  string
+	ghowner string
+	ghrepo  string
 }
 
 type githubrepo interface{
-	OwnerName()
-	RepoName()
+	Owner()
+	Repo()
 }
 
 func ReadRepos (filePath string)(repoList []repo) {
@@ -34,7 +34,7 @@ func ReadRepos (filePath string)(repoList []repo) {
 		// go over each line and split on the slash
 		sp := strings.Split(scanner.Text(), "/")
 		// append as a repo object to the array
-		repoList = append(repoList, repo{owner: sp[0], repo: sp[1] })
+		repoList = append(repoList, repo{ghowner: sp[0], ghrepo: sp[1] })
 	}
 
 	if err := scanner.Err(); err != nil {
@@ -44,10 +44,12 @@ func ReadRepos (filePath string)(repoList []repo) {
 	return repoList
 }
 
-func (r repo) OwnerName() string {
-	return r.owner
+func (r repo) Owner() (owner string) {
+	owner = r.ghowner
+	return
 }
 
-func (r repo) RepoName() string {
-	return r.repo
+func (r repo) Repo() (repo string) {
+	repo = r.ghrepo
+	return
 }
