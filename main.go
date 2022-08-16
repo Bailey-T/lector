@@ -25,7 +25,12 @@ func main() {
 			log.Printf("%v/%v: %v", v.Owner(), v.Repo(), github.Stringify(re.Name))
 		}
 		if v.Source() == "artifacthub" {
-			artifacthub.GetHelmPackage(v.Owner(), v.Repo())
+			re, err := artifacthub.GetHelmPackage(v.Owner(), v.Repo())
+			if err != nil {
+				log.Fatal(err)
+			}
+			log.Printf("%v: {Chart: %v, App: %v} \n", re["name"], re["version"], re["app_version"])	
+
 		}
 	}
 }
@@ -48,5 +53,6 @@ func GitHubSetup() (context.Context, *github.Client) {
 }
 
 func LatestRelease(client *github.Client, ctx context.Context, owner, repo string) (release *github.RepositoryRelease, resp *github.Response, err error) {
+	release, resp, err = client.Repositories.GetLatestRelease(ctx, owner, repo)
 	return
 }
