@@ -7,7 +7,7 @@ Lector is primarily a release notes reader for repos and helm charts, starting w
 Setup:
 
 ```BASH
-export GHTOKEN:{githubPAT/APIKey}
+export GHTOKEN={githubPAT/APIKey}
 
 go run .
 ```
