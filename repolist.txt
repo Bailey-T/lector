@@ -1,8 +1,18 @@
+//Dummy Data
+//Core
 https://github.com/Azure/AKS
 https://github.com/hashicorp/terraform
-https://github.com/hashicorp/vault-k8s
 
+//Components
+https://github.com/hashicorp/terraform-provider-azurerm
+https://github.com/hashicorp/terraform-provider-kubernetes
+https://github.com/hashicorp/terraform-provider-helm
+https://github.com/hashicorp/terraform-provider-vault
 
+//Helm Charts
+https://github.com/cloudability/metrics-agent/releases
 https://artifacthub.io/packages/helm/openstack-helm/elastic-filebeat
-https://artifacthub.io/packages/helm/cert-manager/cert-manager
+https://artifacthub.io/packages/helm/openstack-helm/elastic-metricbeat
+https://artifacthub.io/packages/helm/hashicorp/vault
 https://artifacthub.io/packages/helm/ingress-nginx/ingress-nginx
+https://artifacthub.io/packages/helm/cert-manager/cert-manager
