@@ -4,7 +4,6 @@ import (
 	//"context"
 	"log"
 	//"os"
-
 	"github.com/drtbz/lector/sources"
 	aztexport "github.com/drtbz/lector/exporters/azuretable"
 	"github.com/drtbz/lector/sources/artifacthub"
