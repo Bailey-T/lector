@@ -2,16 +2,14 @@ package github
 
 import (
 	"context"
-	"os"
-	"log"
 	"github.com/google/go-github/v45/github"
 	"golang.org/x/oauth2"
-
-
+	"log"
+	"os"
 )
 
-func PATSetup() (context.Context, *github.Client) {
-	token, tkex := os.LookupEnv("GHTOKEN")
+func PATSetup(s string) (context.Context, *github.Client) {
+	token, tkex := os.LookupEnv(s)
 
 	if !tkex {
 		log.Fatal("Couldn't get token from ENV")
@@ -32,7 +30,7 @@ func LatestRelease(client *github.Client, ctx context.Context, owner, repo strin
 	return
 }
 
-func ListReleases(client *github.Client, ctx context.Context, owner, repo string, prerelease ...bool, ) {
+func ListReleases(client *github.Client, ctx context.Context, owner, repo string, prerelease ...bool) {
 	opt := &github.ListOptions{
 		Page:    0,
 		PerPage: 50,

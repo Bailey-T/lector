@@ -1,20 +1,20 @@
 package main
 
 import (
-	//"context"
-	"log"
-	//"os"
+	"context"
+
+	"github.com/drtbz/lector/exporters/azuretable"
 	"github.com/drtbz/lector/sources"
-	aztexport "github.com/drtbz/lector/exporters/azuretable"
 	"github.com/drtbz/lector/sources/artifacthub"
 	ghsource "github.com/drtbz/lector/sources/github"
 	"github.com/google/go-github/v45/github"
+	"log"
 )
 
 func main() {
 
-	ctx, client := ghsource.PATSetup()
-	repoList := sources.GetUpstream("repolist.txt")
+	ctx, client := ghsource.PATSetup("GHTOKEN")
+	repoList := sources.GetUpstream("_data/repolist.txt")
 	for _, v := range repoList {
 		if v.Source() == "github" {
 			re, _, err := ghsource.LatestRelease(client, ctx, v.Owner(), v.Repo())
@@ -32,4 +32,10 @@ func main() {
 
 		}
 	}
+	aztClient := azuretable.ConnectionStringSetup("DefaultEndpointsProtocol=https;AccountName=tbtfstate;AccountKey=qqQPkM11QPVpa4lrB0bbZo+m7BzOHdA7KIn51C1b0eehsuBAS+YjFBLyAOGMuReEU0WU4Z17EE7P+AStY1yrMQ==;EndpointSuffix=core.windows.net")
+	resp, err := aztClient.CreateTable(context.TODO(), "fromServiceClient", nil)
+	if err != nil {
+		panic(err)
+	}
+	log.Printf("%v", resp)
 }
