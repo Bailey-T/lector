@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"os"
 
 	"github.com/drtbz/lector/exporters/azuretable"
 	"github.com/drtbz/lector/sources"
@@ -12,7 +13,7 @@ import (
 
 func main() {
 
-	serviceClient := azuretable.ConnectionStringSetup("DefaultEndpointsProtocol=https;AccountName=drtbzlector;AccountKey=BUikGQr8ujKUv+Q5dvhd7NC5jvDK9QSxGdzdPnXthuPcR89cxP+CYrg9POQcKs5WbY1Et4GBAMGA+AStQxhnLw==;EndpointSuffix=core.windows.net")
+	serviceClient := azuretable.ConnectionStringSetup(os.Getenv("AZTCON"))
 	if azuretable.Setup("lector", serviceClient) != nil {
 		log.Fatalf("Error Setting up Azure Tables")
 	}
