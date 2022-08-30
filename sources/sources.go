@@ -7,14 +7,14 @@ import (
 	"strings"
 )
 
-type upstream struct {
+type Upstream struct {
 	// Declares the fields for an upstream source to check
 	owner  string // Azure, Hashicorp, Elastic etc.
 	repo   string // AKS, Terraform, MetricBeat etc.
 	source string // Github, ArtifactHub
 }
 
-func GetUpstream(filePath string) (repoList []upstream) {
+func GetUpstream(filePath string) (repoList []Upstream) {
 	// open file
 	f, err := os.Open(filePath)
 	if err != nil {
@@ -32,11 +32,11 @@ func GetUpstream(filePath string) (repoList []upstream) {
 			// go over each line and split on the slash
 			sp := strings.Split(strings.Replace(st, "github.com/", "", 1), "/")
 			// append as a repo object to the array
-			repoList = append(repoList, upstream{owner: sp[0], repo: sp[1], source: "github"})
+			repoList = append(repoList, Upstream{owner: sp[0], repo: sp[1], source: "github"})
 		}
 		if strings.Contains(st, "artifacthub") {
 			sp := strings.Split(strings.Replace(st, "artifacthub.io/", "", 1), "/")
-			repoList = append(repoList, upstream{owner: sp[2], repo: sp[3], source: "artifacthub"})
+			repoList = append(repoList, Upstream{owner: sp[2], repo: sp[3], source: "artifacthub"})
 		}
 	}
 
@@ -47,14 +47,14 @@ func GetUpstream(filePath string) (repoList []upstream) {
 	return repoList
 }
 
-func (u upstream) Owner() (owner string) {
+func (u Upstream) Owner() (owner string) {
 	return u.owner
 }
 
-func (u upstream) Repo() (repo string) {
+func (u Upstream) Repo() (repo string) {
 	return u.repo
 }
 
-func (u upstream) Source() (repo string) {
+func (u Upstream) Source() (repo string) {
 	return u.source
 }
